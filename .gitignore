@@ -1,0 +1,4 @@
+assets/
+.config
+.DS_Store
+.htaccess
