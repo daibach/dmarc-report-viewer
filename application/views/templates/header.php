@@ -5,6 +5,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/stylesheet.css">
+  <?php if(APP_CUSTOM_CSS) : ?>
+    <link rel="stylesheet" href="<?php echo APP_CUSTOM_CSS_PATH; ?>">
+  <?php endif;?>
 </head>
 <body>
   <header>
