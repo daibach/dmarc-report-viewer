@@ -9,7 +9,7 @@ class Domains_model extends CI_Model {
   function get_domains() {
     $this->db->distinct();
     $this->db->group_by('domain_name');
-    $this->db->order_by('domain_name, domain_full');
+    $this->db->order_by('domain_tld, domain_name, domain_full');
     $query = $this->db->get('dmarc_domains');
     if($query->num_rows() > 0) {
       return $query->result();
