@@ -20,6 +20,7 @@
     </tr>
   </thead>
   <tbody>
+    <?php if($spf_records) : ?>
     <?php foreach($spf_records as $record) : ?>
       <tr>
         <td><?php echo $record->record_date; ?></td>
@@ -29,6 +30,7 @@
           <td><samp><?php echo $record->record_text; ?></samp></td>
         <?php endif; ?>
     <?php endforeach; ?>
+    <?php endif; ?>
   </tbody>
 </table>
 
@@ -43,6 +45,7 @@
     </tr>
   </thead>
   <tbody>
+    <?php if($dmarc_records) : ?>
     <?php foreach($dmarc_records as $record) : ?>
       <tr>
         <td><?php echo $record->record_date; ?></td>
@@ -52,5 +55,6 @@
           <td><samp><?php echo $record->record_text; ?></samp></td>
         <?php endif; ?>
     <?php endforeach; ?>
+    <?php endif; ?>
   </tbody>
 </table>
