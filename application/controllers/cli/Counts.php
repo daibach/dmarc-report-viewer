@@ -57,4 +57,15 @@ class Counts extends CI_Controller {
 
   }
 
+  public function clear_cache() {
+    $domains = $this->domains->get_domains();
+
+    $this->output->delete_cache('/domains');
+
+    foreach($domains as $domain) {
+      $this->output->delete_cache('/domains/detail/'.$domain->domain_full);
+      $this->output->delete_cache('/domains/chart/'.$domain->domain_full);
+    }
+  }
+
 }
