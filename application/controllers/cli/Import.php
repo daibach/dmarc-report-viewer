@@ -127,7 +127,7 @@ class Import extends CI_Controller {
     $reason_xml = $xml->row->policy_evaluated->reason;
     if($reason_xml) { $notes = (string)$reason_xml->type; }
 
-    $domain_info = $this->_get_domain_info((string)$xml->identifiers->header_from);
+    $domain_info = http_get_domain_info((string)$xml->identifiers->header_from);
 
     $source_ip = (string)$xml->row->source_ip;
 
@@ -149,84 +149,6 @@ class Import extends CI_Controller {
     );
     return $this->dmarc->create_record($record, $report_id);
 
-  }
-
-  private function _get_domain_info($domain) {
-
-    $domain_parts = array_reverse(explode('.',$domain));
-    $count = count($domain_parts);
-    $domain_details = array(
-      'tld'     => '',
-      'domain'  => '',
-      'sub'     => ''
-    );
-
-    if((substr_count($domain, '.service.gov.uk') > 0)
-        || (substr_count($domain, '.direct.gov.uk') > 0)
-        || (substr_count($domain, '.businesslink.gov.uk') > 0) ) {
-      //this is a service.gov.uk domain
-      $domain_details['tld'] = $domain_parts[2].'.gov.uk';
-      $domain_details['domain'] = $domain_parts[3];
-
-      if($count > 4) {
-        $domain_details['sub'] = str_replace('.'.$domain_parts[3].'.'.
-          $domain_parts[2].'.gov.uk', '', $domain);
-      }
-    } elseif(substr_count($domain, '.gov.uk') > 0) {
-      //this is a gov.uk subdomain
-      $domain_details['tld'] = 'gov.uk';
-      $domain_details['domain'] = $domain_parts[2];
-
-      if($count > 3) {
-        $domain_details['sub'] = str_replace('.'.$domain_parts[2].'.gov.uk', '',
-          $domain);
-      }
-    } elseif(substr_count($domain, '.uk') > 0) {
-      //this is a .uk subdomain
-      switch($domain_parts[1]) {
-        case 'ac':
-        case 'co':
-        case 'gov':
-        case 'judicary':
-        case 'ltd':
-        case 'me':
-        case 'mod':
-        case 'net':
-        case 'nhs':
-        case 'nic':
-        case 'org':
-        case 'parliament':
-        case 'plc':
-        case 'police':
-        case 'sch':
-          $domain_details['tld'] = $domain_parts[1].'.uk';
-          $domain_details['domain'] = $domain_parts[2];
-          if($count > 3) {
-            $domain_details['sub'] = str_replace('.'.$domain_parts[2].'.'.
-              $domain_parts[1].'.uk', '', $domain);
-          }
-          break;
-        default:
-          $domain_details['tld'] = 'uk';
-          $domain_details['domain'] = $domain_parts[1];
-          if($count > 2) {
-            $domain_details['sub'] = str_replace('.'.$domain_parts[1].'.uk', '',
-              $domain);
-          }
-      }
-
-    } else {
-      //this is some other domain
-      $domain_details['tld'] = $domain_parts[0];
-      $domain_details['domain'] = $domain_parts[1];
-      if($count > 2) {
-        $domain_details['sub'] = str_replace('.'.$domain_parts[1].'.'.
-          $domain_parts[0], '', $domain);
-      }
-    }
-    $domain_details['domain'] = $domain_details['domain'].'.'.
-      $domain_details['tld'];
-    return $domain_details;
   }
 
 
