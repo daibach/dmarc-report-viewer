@@ -124,7 +124,7 @@ class Dmarc_model extends CI_Model {
     $this->db->where('dmarc_records.domain_name',$domain);
     $this->db->order_by('report_date desc, count desc, domain_tld asc,
       domain_name asc, domain_sub asc, source_ip');
-    $query = $this->db->get('dmarc_records',5000);
+    $query = $this->db->get('dmarc_records',1000);
     if($query->num_rows() > 0) {
       return $query->result();
     } else {
