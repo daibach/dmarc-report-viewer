@@ -1,10 +1,14 @@
 <?php
-function http_dns_lookup($domain, $type) {
+function http_dns_lookup($domain, $type, $return_first_answer=true) {
   $response = http_get_url("https://dns.google.com/resolve?name=".$domain."&type=".$type);
   if($response['http_status'] == 200 && $response['curl_error']==0) {
     $json = json_decode($response['content']);
     if(property_exists($json,'Answer')) {
-      return $json->Answer[0]->data;
+      if($return_first_answer) {
+        return $json->Answer[0]->data;
+      } else {
+        return $json->Answer;
+      }
     } else {
       return false;
     }
