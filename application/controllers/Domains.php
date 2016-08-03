@@ -12,6 +12,8 @@ class Domains extends CI_Controller {
 
   public function index() {
 
+    $this->output->cache(APP_CACHE_TIME);
+
     $page_data = array(
       'domains' => $this->domains->get_domains()
     );
@@ -24,6 +26,7 @@ class Domains extends CI_Controller {
 
   public function detail($domain="") {
     if($domain==="") { show_404(); }
+    $this->output->cache(APP_CACHE_TIME);
 
     $page_data = array(
       'domain_info'       => $this->domains->get($domain),
@@ -41,6 +44,7 @@ class Domains extends CI_Controller {
 
   public function chart($domain="") {
     if($domain==="") { show_404(); }
+    $this->output->cache(APP_CACHE_TIME);
 
     $page_data = array(
       'email_counts'      => $this->dmarc->get_counts($domain),
