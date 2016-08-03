@@ -1,0 +1,60 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Counts extends CI_Controller {
+
+  function __construct() {
+    parent::__construct();
+    $this->load->model('Domains_model','domains');
+  }
+
+  public function index() {}
+
+  public function go() {
+    $this->_generate_domain_counts();
+  }
+
+  private function _generate_domain_counts() {
+
+    log_message('info', 'Starting domain counts');
+
+    $domains = $this->domains->get_domains();
+
+    $records = array();
+
+    foreach($domains as $domain) {
+
+      $average = $this->domains->get_domain_average_send($domain->domain_full);
+      $this_week = $this->domains->get_domain_send_for_week($domain->domain_full, date('W'));
+      $last_week = $this->domains->get_domain_send_for_week($domain->domain_full, date('W')-1);
+
+      $data = array(
+        'domain_full'         => $domain->domain_full,
+        'avg_weekly_sent'     => $average,
+        'this_week_sent'      => 0,
+        'this_week_pass_pct'  => 0,
+        'last_week_sent'      => 0,
+        'last_week_pass_pct'  => 0,
+      );
+
+      if($this_week) {
+        $data['this_week_sent'] = $this_week->total;
+        $data['this_week_pass_pct'] = $this_week->pct_pass;
+      }
+
+      if($last_week) {
+        $data['last_week_sent'] = $last_week->total;
+        $data['last_week_pass_pct'] = $last_week->pct_pass;
+      }
+
+      array_push($records,$data);
+
+    }
+
+    $this->domains->update_domain_counts($records);
+
+    log_message('info', 'Ending domain counts');
+
+  }
+
+}

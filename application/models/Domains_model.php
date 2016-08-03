@@ -40,5 +40,34 @@ class Domains_model extends CI_Model {
       return false;
     }
   }
+
+  function get_domain_average_send($domain) {
+    $this->db->select("ROUND(AVG(total),0) as avg_sent");
+    $this->db->where('domain',$domain);
+    $query = $this->db->get('dmarc_counts_weekly');
+    if($query->num_rows() > 0) {
+      return $query->row()->avg_sent;
+    } else {
+      return false;
+    }
+  }
+
+  function get_domain_send_for_week($domain,$week) {
+    $this->db->select('total, pct_pass');
+    $this->db->where('domain',$domain);
+    $this->db->where('week',$week);
+    $this->db->where('year',date('Y'));
+    $query = $this->db->get('dmarc_counts_weekly');
+    if($query->num_rows() > 0) {
+      return $query->row();
+    } else {
+      return false;
+    }
+  }
+
+  function update_domain_counts($records) {
+    $this->db->update_batch('dmarc_domains', $records, 'domain_full');
+  }
+
 }
 ?>
