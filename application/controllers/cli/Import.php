@@ -15,6 +15,7 @@ class Import extends CI_Controller {
   }
 
   public function regen_counts() {
+    $this->dmarc->update_domain_table();
     $this->_generate_daily_aggregate_counts();
     $this->_generate_weekly_aggregate_counts();
   }
