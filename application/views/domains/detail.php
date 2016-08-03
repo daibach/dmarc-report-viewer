@@ -137,7 +137,7 @@
 </table>
 
 
-<h2 id="dmarc-records">Records</h2>
+<h2 id="dmarc-records">DMARC records</h2>
 <table width="100%" class="records">
   <thead>
     <tr>
