@@ -251,8 +251,27 @@ class Dmarc_model extends CI_Model {
 
   }
 
+  function generate_weekly_aggregate_count() {
+
+    $sql = "INSERT INTO daibach_dmarc_counts_weekly (`year`,`week`,`domain`,
+      `total`,`total_pass`,`total_fail`,`pct_pass`)
+      SELECT year(`date`) AS year, week(`date`) AS week, domain,
+        SUM(total) AS total, SUM(total_pass) AS total_pass,
+        SUM(total_fail) AS total_fail,
+        ROUND(100*SUM(total_pass)/SUM(total),2) AS pct_pass
+      FROM daibach_dmarc_counts
+      GROUP BY domain, week(`date`);";
+
+    return $this->db->query($sql);
+
+  }
+
   function reset_daily_aggregate_counts() {
     $this->db->delete('dmarc_counts','id > 0');
+  }
+
+  function reset_weekly_aggregate_counts() {
+    $this->db->delete('dmarc_counts_weekly','id > 0');
   }
 
   public function update_ip_table() {

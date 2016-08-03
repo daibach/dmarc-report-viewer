@@ -16,6 +16,7 @@ class Import extends CI_Controller {
 
   public function regen_counts() {
     $this->_generate_daily_aggregate_counts();
+    $this->_generate_weekly_aggregate_counts();
   }
 
   private function _start_import() {
@@ -38,6 +39,7 @@ class Import extends CI_Controller {
       if($count) {
         log_message('info', 'There were new files, starting additional processing.');
         $this->_generate_daily_aggregate_counts();
+        $this->_generate_weekly_aggregate_counts();
         $this->dmarc->update_ip_table();
         $this->_do_domain_dns_lookups();
         $this->dmarc->update_domain_table();
@@ -204,6 +206,16 @@ class Import extends CI_Controller {
     }
 
     log_message('info', 'Finished generating daily aggregate counts');
+  }
+
+  function _generate_weekly_aggregate_counts() {
+
+    log_message('info', 'Starting generating weekly aggregate counts');
+
+    $this->dmarc->reset_weekly_aggregate_counts();
+    $this->dmarc->generate_weekly_aggregate_count();
+
+    log_message('info', 'Finished generating weekly aggregate counts');
   }
 
   /* FUNCTIONS FOR DOMAIN DNS LOOKUPS */
