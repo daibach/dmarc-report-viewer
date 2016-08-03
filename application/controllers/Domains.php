@@ -6,6 +6,7 @@ class Domains extends CI_Controller {
   function __construct() {
     parent::__construct();
     $this->load->model('domains_model','domains');
+    $this->load->model('dmarc_model','dmarc');
     $this->load->helper('ui_helper');
   }
 
@@ -25,9 +26,12 @@ class Domains extends CI_Controller {
     if($domain==="") { show_404(); }
 
     $page_data = array(
-      'domain_info'   => $this->domains->get($domain),
-      'dmarc_records' => $this->domains->get_dns_record($domain,'v=dmarc1'),
-      'spf_records'   => $this->domains->get_dns_record($domain,'v=spf1'),
+      'domain_info'       => $this->domains->get($domain),
+      'dmarc_dns_records' => $this->domains->get_dns_record($domain,'v=dmarc1'),
+      'spf_dns_records'   => $this->domains->get_dns_record($domain,'v=spf1'),
+      'email_counts'      => $this->dmarc->get_counts($domain),
+      'dmarc_reports'     => $this->dmarc->get_reports_for_domain_name($domain),
+      'dmarc_records'     => $this->dmarc->get_records_for_domain($domain)
     );
 
     $this->load->view('templates/header');

@@ -4,6 +4,7 @@ h1 span { color: #5cb85c; }
 h2 { padding-top: 15px; }
 table th, table td { padding: 5px; border-bottom: #ddd 1px solid; }
 table th { font-weight: bold; background: #005EA5; color: #fff; }
+table th.date { width: 150px; }
 table tr:nth-child(even) { background: #f5f5f5; }
 table tr.pass td { background: #d6e9c6; border-color: #3c763d; }
 table td.disposition_quarantine { background: #f0ad4e; }
@@ -17,5 +18,7 @@ table.records td { font-size: 0.8em; }
 .navbar-inverse .navbar-nav>li>a { color: #fff; }
 .navbar-inverse .navbar-nav>.active>a { background: #005EA5; }
 .navbar-inverse .navbar-nav>li>a:hover { background: #005EA5; }
+
+ul.nav-pills { background: #f5f5f5; border-radius: 4px; }
 
 footer { background: #F8F8F8; border-top: #DEE0E2 1px solid; margin: 30px 0 0 0; padding: 15px 0 30px 0; }

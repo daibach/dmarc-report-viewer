@@ -18,7 +18,7 @@
     <tr>
       <td><a href="/domains/detail/<?php echo $d->domain_full; ?>"><?php echo $d->domain_full; ?></a></td>
       <td><?php echo ui_produce_badge($d->last_spf_result); ?></td>
-      <td><?php echo ui_produce_badge($d->last_dmarc_result); ?></td>
+      <td><?php echo ui_produce_dmarc_badge($d->last_dmarc_result); ?></td>
     </tr>
   <?php endforeach;?>
   </tbody>
