@@ -15,7 +15,7 @@ class Import extends CI_Controller {
   }
 
   public function regen_counts() {
-    $this->_generate_aggregate_counts();
+    $this->_generate_daily_aggregate_counts();
   }
 
   private function _start_import() {
@@ -37,7 +37,7 @@ class Import extends CI_Controller {
       log_message('info', 'File processing completed');
       if($count) {
         log_message('info', 'There were new files, starting additional processing.');
-        $this->_generate_aggregate_counts();
+        $this->_generate_daily_aggregate_counts();
         $this->dmarc->update_ip_table();
         $this->_do_domain_dns_lookups();
         $this->dmarc->update_domain_table();
@@ -154,17 +154,17 @@ class Import extends CI_Controller {
 
 
   /* FUNCTION FOR GENERATING COUNTS */
-  function _generate_aggregate_counts() {
+  function _generate_daily_aggregate_counts() {
 
-    log_message('info', 'Starting generating aggregate counts');
+    log_message('info', 'Starting generating daily aggregate counts');
 
     $domains = $this->dmarc->get_distinct_domains();
-    $this->dmarc->reset_aggregate_counts();
+    $this->dmarc->reset_daily_aggregate_counts();
 
     foreach($domains as $domain) {
-      log_message('info', "Generating aggregate counts for $domain->domain_name");
+      log_message('info', "Generating daily aggregate counts for $domain->domain_name");
       $data = array();
-      $result = $this->dmarc->get_aggregate_counts($domain->domain_name);
+      $result = $this->dmarc->get_daily_aggregate_counts($domain->domain_name);
 
       foreach($result as $r) {
         if(! array_key_exists($r->report_date,$data)) {
@@ -189,7 +189,7 @@ class Import extends CI_Controller {
       }
 
       foreach($data as $d=>$val) {
-        $this->dmarc->create_aggregate_count(
+        $this->dmarc->create_daily_aggregate_count(
           $domain->domain_name, $d,
           $val['total'],
           $val['total_pass'],
@@ -203,7 +203,7 @@ class Import extends CI_Controller {
       }
     }
 
-    log_message('info', 'Finished generating aggregate counts');
+    log_message('info', 'Finished generating daily aggregate counts');
   }
 
   /* FUNCTIONS FOR DOMAIN DNS LOOKUPS */

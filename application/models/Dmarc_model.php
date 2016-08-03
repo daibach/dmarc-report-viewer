@@ -213,7 +213,7 @@ class Dmarc_model extends CI_Model {
     }
   }
 
-  function get_aggregate_counts($domain='') {
+  function get_daily_aggregate_counts($domain='') {
 
     $this->db->select('dmarc_reports.report_date, dmarc_records.overall_result,
       dmarc_records.disposition, SUM(count) as c');
@@ -231,7 +231,7 @@ class Dmarc_model extends CI_Model {
 
   }
 
-  function create_aggregate_count($domain, $date, $total, $total_pass,
+  function create_daily_aggregate_count($domain, $date, $total, $total_pass,
     $total_fail, $none_pass, $none_fail, $quarantine_fail, $reject_fail,
     $other) {
 
@@ -251,7 +251,7 @@ class Dmarc_model extends CI_Model {
 
   }
 
-  function reset_aggregate_counts() {
+  function reset_daily_aggregate_counts() {
     $this->db->delete('dmarc_counts','id > 0');
   }
 
