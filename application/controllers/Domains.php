@@ -39,4 +39,15 @@ class Domains extends CI_Controller {
     $this->load->view('templates/footer');
   }
 
+  public function chart($domain="") {
+    if($domain==="") { show_404(); }
+
+    $page_data = array(
+      'email_counts'      => $this->dmarc->get_counts($domain),
+    );
+
+    $this->load->view('domains/chart', $page_data);
+    $this->output->set_content_type('text/javascript');
+  }
+
 }
