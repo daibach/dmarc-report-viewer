@@ -10,7 +10,8 @@
   <div class="col-md-9">
     <p class="info"><strong>Last  check:</strong> <?php echo $domain_info->last_checked; ?>
     <br/><strong>SPF:</strong> <?php echo ui_produce_badge($domain_info->last_spf_result); ?>
-    <br/><strong>DMARC:</strong> <?php echo ui_produce_dmarc_badge($domain_info->last_dmarc_result); ?></p>
+    <br/><strong>DMARC:</strong> <?php echo ui_produce_dmarc_badge($domain_info->last_dmarc_result); ?>
+    <br/><strong>Weekly Avg:</strong> <?php echo $domain_info->avg_weekly_sent; ?></p>
   </div>
   <div class="col-md-3">
     <ul class="nav nav-pills nav-stacked">
