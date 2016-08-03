@@ -271,4 +271,27 @@ class Dmarc_model extends CI_Model {
     }
   }
 
+  public function update_domain_table() {
+    $this->db->select('domain_name, domain_tld');
+    $this->db->distinct();
+    $this->db->where("NOT EXISTS (SELECT domain_name FROM daibach_dmarc_domains
+      WHERE daibach_dmarc_records.domain_name=daibach_dmarc_domains.domain_name)",false,false);
+    $query = $this->db->get('dmarc_records');
+    if($query->num_rows() > 0) {
+      $result = $query->result();
+      $domains = array();
+      foreach($result as $row) {
+        array_push(
+          $domains,
+          array(
+            'domain_full'=>$row->domain_name,
+            'domain_name'=>$row->domain_name,
+            'domain_tld' =>$row->domain_tld
+          )
+        );
+      }
+      $this->db->insert_batch('dmarc_domains',$domains);
+    }
+  }
+
 }

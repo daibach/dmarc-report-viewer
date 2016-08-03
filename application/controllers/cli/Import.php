@@ -40,6 +40,7 @@ class Import extends CI_Controller {
         $this->_generate_aggregate_counts();
         $this->dmarc->update_ip_table();
         $this->_do_domain_dns_lookups();
+        $this->dmarc->update_domain_table();
       } else {
         log_message('info', 'There were no new files');
       }
