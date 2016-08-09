@@ -1,0 +1,22 @@
+<?php
+//rename this as .config
+
+date_default_timezone_set('UTC');
+
+define('SITE_TITLE',          'DMARC Viewer');
+define('SITE_NAME',           'DMARC Viewer');
+define('SITE_BASE_URL',       'https://someurl.com');
+define('SITE_LOG_THRESHOLD',  1);
+define('SITE_LOG_PATH',       './assets/logs/');
+define('SITE_CACHE_PATH',     './assets/cache/');
+
+define('APP_DMARC_REPORT_PATH', './assets/dmarc-reports/');
+define('APP_CUSTOM_CSS',        false);
+define('APP_CUSTOM_CSS_PATH',   false);
+define('APP_CACHE_TIME',        1440);
+
+define('DB_HOSTNAME',         'DATABASE_HOSTNAME');
+define('DB_DATABASE',         'DATABASE_NAME');
+define('DB_USERNAME',         'DATABASE_USER');
+define('DB_PASSWORD',         'DATABASE_PASSWORD');
+define('DB_TBPREFIX',         'DATABASE_TABLE_PREFIX');
