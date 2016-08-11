@@ -6,6 +6,7 @@ class Import extends CI_Controller {
   function __construct() {
     parent::__construct();
     $this->load->model('dmarc_model','dmarc');
+    $this->load->helper('http_helper');
   }
 
   public function index() {}
@@ -234,7 +235,6 @@ class Import extends CI_Controller {
   }
 
   private function _lookup_ip($ip) {
-    $this->load->helper('http_helper');
 
     $lookup_ip = "";
     if(strpos($ip, ":")) {
