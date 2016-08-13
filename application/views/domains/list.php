@@ -24,11 +24,15 @@
       <td><a href="/domains/detail/<?php echo $d->domain_full; ?>"><?php echo $d->domain_full; ?></a></td>
       <td><?php echo ui_produce_badge($d->last_spf_result); ?></td>
       <td><?php echo ui_produce_dmarc_badge($d->last_dmarc_result); ?></td>
+      <?php if($d->received_dmarc_reports) : ?>
       <td><?php echo $d->avg_weekly_sent; ?></td>
       <td><?php echo $d->this_week_sent; ?></td>
       <td><?php echo $d->this_week_pass_pct;?>%</td>
       <td><?php echo $d->last_week_sent; ?></td>
       <td><?php echo $d->last_week_pass_pct;?>%</td>
+      <?php else : ?>
+      <td></td><td></td><td></td><td></td><td></td>
+      <?php endif; ?>
     </tr>
   <?php endforeach;?>
   </tbody>
