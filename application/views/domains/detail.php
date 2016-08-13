@@ -17,18 +17,22 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#spf-dns">SPF DNS records</a></li>
       <li><a href="#dmarc-dns">DMARC DNS records</a></li>
+      <?php if($domain_info->received_dmarc_reports) : ?>
       <li><a href="#email-counts">Email counts</a></li>
       <li><a href="#dmarc-reports">DMARC reports</a></li>
       <li><a href="#dmarc-records">DMARC records</a></li>
+      <?php endif; ?>
     </ul>
   </div>
 </div>
 
 <hr/>
 
+<?php if($domain_info->received_dmarc_reports) : ?>
 <div class="well">
   <div id="curve_chart" style="height: 500px"></div>
 </div>
+<?php endif; ?>
 
 <h2 id="spf-dns">SPF DNS records</h2>
 
@@ -79,6 +83,7 @@
   </tbody>
 </table>
 
+<?php if($domain_info->received_dmarc_reports) : ?>
 <h2 id="email-counts">Counts</h2>
 <table width="100%">
   <thead>
@@ -174,3 +179,4 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="/domains/chart/<?php echo $domain_info->domain_full; ?>"></script>
+<?php endif; ?>
