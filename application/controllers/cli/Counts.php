@@ -24,30 +24,49 @@ class Counts extends CI_Controller {
 
     foreach($domains as $domain) {
 
-      $average = $this->domains->get_domain_average_send($domain->domain_full);
-      $this_week = $this->domains->get_domain_send_for_week($domain->domain_full, date('W'));
-      $last_week = $this->domains->get_domain_send_for_week($domain->domain_full, date('W')-1);
+      $total_dmarc_reports = $this->domains->get_domain_dmarc_reports_total($domain->domain_full);
 
-      $data = array(
-        'domain_full'         => $domain->domain_full,
-        'avg_weekly_sent'     => $average,
-        'this_week_sent'      => 0,
-        'this_week_pass_pct'  => 0,
-        'last_week_sent'      => 0,
-        'last_week_pass_pct'  => 0,
-      );
+      if(! $total_dmarc_reports) {
+        $data = array(
+          'domain_full'         => $domain->domain_full,
+          'avg_weekly_sent'     => NULL,
+          'this_week_sent'      => NULL,
+          'this_week_pass_pct'  => NULL,
+          'last_week_sent'      => NULL,
+          'last_week_pass_pct'  => NULL,
+          'received_dmarc_reports' => false
+        );
+        array_push($records,$data);
 
-      if($this_week) {
-        $data['this_week_sent'] = $this_week->total;
-        $data['this_week_pass_pct'] = $this_week->pct_pass;
+      } else {
+
+        $average = $this->domains->get_domain_average_send($domain->domain_full);
+        $this_week = $this->domains->get_domain_send_for_week($domain->domain_full, date('W'));
+        $last_week = $this->domains->get_domain_send_for_week($domain->domain_full, date('W')-1);
+
+        $data = array(
+          'domain_full'         => $domain->domain_full,
+          'avg_weekly_sent'     => $average,
+          'this_week_sent'      => 0,
+          'this_week_pass_pct'  => 0,
+          'last_week_sent'      => 0,
+          'last_week_pass_pct'  => 0,
+          'received_dmarc_reports' => true
+        );
+
+        if($this_week) {
+          $data['this_week_sent'] = $this_week->total;
+          $data['this_week_pass_pct'] = $this_week->pct_pass;
+        }
+
+        if($last_week) {
+          $data['last_week_sent'] = $last_week->total;
+          $data['last_week_pass_pct'] = $last_week->pct_pass;
+        }
+
+        array_push($records,$data);
+
       }
-
-      if($last_week) {
-        $data['last_week_sent'] = $last_week->total;
-        $data['last_week_pass_pct'] = $last_week->pct_pass;
-      }
-
-      array_push($records,$data);
 
     }
 

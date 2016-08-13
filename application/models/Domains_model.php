@@ -65,6 +65,12 @@ class Domains_model extends CI_Model {
     }
   }
 
+  function get_domain_dmarc_reports_total($domain) {
+    $this->db->where('domain_name',$domain);
+    $this->db->from('dmarc_records');
+    return $this->db->count_all_results();
+  }
+
   function update_domain_counts($records) {
     $this->db->update_batch('dmarc_domains', $records, 'domain_full');
   }
