@@ -19,8 +19,8 @@
       <li><a href="#dmarc-dns">DMARC DNS records</a></li>
       <?php if($domain_info->received_dmarc_reports) : ?>
       <li><a href="#email-counts">Email counts</a></li>
-      <li><a href="#dmarc-reports">DMARC reports</a></li>
       <li><a href="#dmarc-records">DMARC records</a></li>
+      <li><a href="#dmarc-reports">DMARC reports</a></li>
       <?php endif; ?>
     </ul>
   </div>
@@ -112,37 +112,6 @@
   </tbody>
 </table>
 
-<h2 id="dmarc-reports">DMARC reports</h2>
-<table width="100%">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Reporter</th>
-      <th>Report For</th>
-      <th>Pass</th>
-      <th>Fail</th>
-      <th>p</th>
-      <th>sp</th>
-      <th>pct</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php if($dmarc_reports) : foreach($dmarc_reports as $r) : ?>
-      <tr>
-        <td><a href="/reports/dmarc-aggregate-report/<?php echo $r->id; ?>"><?php echo date('d M Y',mysql_to_unix($r->report_date));?></a></td>
-        <td><?php echo $r->reporter; ?></td>
-        <td><?php echo $r->domain; ?></td>
-        <td><?php echo $r->total_pass; ?></td>
-        <td><?php echo $r->total_fail; ?></td>
-        <td><?php echo $r->policy_p; ?></td>
-        <td><?php echo $r->policy_sp; ?></td>
-        <td><?php echo $r->policy_pct; ?></td>
-      </tr>
-    <?php endforeach; endif; ?>
-  </tbody>
-</table>
-
-
 <h2 id="dmarc-records">DMARC records</h2>
 <table width="100%" class="records">
   <thead>
@@ -174,6 +143,36 @@
       <td><a href="/reports/view-record/<?php echo $r->id; ?>">detail</a></td>
     </tr>
 <?php endforeach; endif;  ?>
+  </tbody>
+</table>
+
+<h2 id="dmarc-reports">DMARC reports</h2>
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Reporter</th>
+      <th>Report For</th>
+      <th>Pass</th>
+      <th>Fail</th>
+      <th>p</th>
+      <th>sp</th>
+      <th>pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php if($dmarc_reports) : foreach($dmarc_reports as $r) : ?>
+      <tr>
+        <td><a href="/reports/dmarc-aggregate-report/<?php echo $r->id; ?>"><?php echo date('d M Y',mysql_to_unix($r->report_date));?></a></td>
+        <td><?php echo $r->reporter; ?></td>
+        <td><?php echo $r->domain; ?></td>
+        <td><?php echo $r->total_pass; ?></td>
+        <td><?php echo $r->total_fail; ?></td>
+        <td><?php echo $r->policy_p; ?></td>
+        <td><?php echo $r->policy_sp; ?></td>
+        <td><?php echo $r->policy_pct; ?></td>
+      </tr>
+    <?php endforeach; endif; ?>
   </tbody>
 </table>
 
